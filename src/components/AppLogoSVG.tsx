@@ -1,0 +1,32 @@
+import * as React from "react";
+import Svg, { Path, SvgProps } from "react-native-svg";
+
+export default function AppLogoSVG(props: SvgProps) {
+  return (
+    <Svg
+      // xmlns="http://www.w3.org/2000/svg"
+      width={398}
+      height={174}
+      viewBox="0 0 398 174"
+      fill="none"
+      {...props}
+    >
+      <Path
+        d="M390 16.5812L206.565 81.4072C200.928 83.3996 194.775 83.3879 189.145 81.3741L8 16.5812"
+        stroke="#F0C38E"
+        strokeWidth={15}
+        strokeLinecap="round"
+      />
+      <Path
+        d="M364.687 3L207.394 55.3809C201.201 57.4436 194.503 57.4296 188.318 55.341L33.3133 3"
+        stroke="#F0C38E"
+        strokeWidth={6}
+        strokeLinecap="round"
+      />
+      <Path
+        d="M276.631 146.137C280.479 156.04 269.474 161.071 262.608 152.963C245.008 132.183 233.891 117.823 199 117.823C165.158 117.823 152.422 130.995 135.979 150.844C129.028 159.235 117.902 154.359 122.107 144.307C134.352 115.032 164.165 94.3646 199 94.3646C234.556 94.3646 264.881 115.897 276.631 146.137Z"
+        fill="#F0C38E"
+      />
+    </Svg>
+  );
+}
