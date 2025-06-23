@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   View,
-  TextInput,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -9,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import AppLogoSVG from "../../components/AppLogoSVG";
+import { TextInput } from "react-native-paper";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -30,7 +30,7 @@ export default function Register() {
       <View id="container" className="flex-1 bg-[#2d3250]">
         <View
           id="app-logo"
-          className="h-[20%] flex flex-col items-center gap-y-4 mt-auto"
+          className="flex-[0.3] flex flex-col justify-end items-center"
         >
           <AppLogoSVG width={200} height={100} />
           <Text
@@ -40,15 +40,20 @@ export default function Register() {
             ختمة فهد
           </Text>
         </View>
-        <View id="register-section" className="flex flex-col items-center">
-          <Text className="text-2xl mb-auto text-[#f9b17a]">تسجيل حساب</Text>
+        <View
+          id="register-section"
+          className="flex-[0.7] flex flex-col justify-center items-center"
+        >
+          <Text className="text-2xl text-[#f9b17a]">تسجيل حساب</Text>
           <View className="w-[90%]">
             <TextInput
               value={email}
               onChangeText={setEmail}
-              placeholder="Email"
+              label="Email"
               keyboardType="email-address"
-              className="w-full p-4 mb-4 bg-white border border-gray-300 rounded-2xl shadow-gray-300 shadow-xl placeholder:text-gray-500"
+              mode="outlined"
+              //className="w-full p-4 mb-4 bg-white border border-gray-300 rounded-2xl shadow-gray-300 shadow-xl placeholder:text-gray-500"
+              autoCapitalize="none"
             />
             <TextInput
               value={name}
