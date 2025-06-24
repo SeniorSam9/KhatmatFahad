@@ -10,8 +10,8 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [loaded, error] = useFonts({
-    appFont: require("./assets/fonts/static/Rubik-Regular.ttf"),
-    appFontBold: require("./assets/fonts/static/Rubik-Bold.ttf"),
+    appFont: require("./assets/fonts/static/IBMPlexSansArabic-Regular.ttf"),
+    appFontBold: require("./assets/fonts/static/IBMPlexSansArabic-SemiBold.ttf"),
   });
 
   useEffect(() => {
