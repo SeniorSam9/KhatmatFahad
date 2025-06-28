@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -7,25 +7,33 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
-  Image,
   Platform,
   ScrollView,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import AppLogoSVG from "../../components/AppLogoSVG";
 import { FontAwesome } from "@expo/vector-icons";
+import { RefType, RootStackParamsType } from "../../utils/types";
+import { ActivityIndicator } from "react-native-paper";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export default function Register() {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const emailRef = useRef<RefType>({ value: "", input: null });
+  const usernameRef = useRef<RefType>({ value: "", input: null });
+  const passwordRef = useRef<RefType>({ value: "", input: null });
+  const confirmPasswordRef = useRef<RefType>({ value: "", input: null });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamsType>>();
 
   const handleSubmit = () => {
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
-    } else {
-      alert("Form submitted successfully!");
-    }
+    setIsLoading(true);
+    // if (passwordRef.current !== confirmPasswordRef.current) {
+    //   alert("Passwords do not match!");
+    // } else {
+    //   alert("Form submitted successfully!");
+    // }
   };
 
   return (
@@ -66,74 +74,123 @@ export default function Register() {
                     قم بإنشاء حسابك لإنشاء جلسات ختم القرآن الكريم
                   </Text>
                 </View>
+                <TouchableWithoutFeedback
+                  onPress={() => emailRef.current.input?.focus()}
+                >
+                  <View className="flex-row items-center bg-gray-100 rounded-2xl px-4 py-5 w-full justify-between mb-4 border border-[#2d3250]">
+                    <TextInput
+                      ref={(ref) => {
+                        emailRef.current.input = ref;
+                      }}
+                      defaultValue={emailRef.current.value}
+                      onChangeText={(text) => (emailRef.current.value = text)}
+                      placeholder="البريد الإلكتروني"
+                      keyboardType="email-address"
+                      placeholderTextColor="#A0A0A0"
+                      className="text-right flex-1 mr-2 h-full text-gray-700"
+                      textAlign="right"
+                    />
+                    <FontAwesome name="envelope-o" size={20} color="#A0A0A0" />
+                  </View>
+                </TouchableWithoutFeedback>
 
-                <View className="flex-row items-center bg-gray-100 rounded-2xl px-4 py-5 w-full justify-between mb-4 border border-[#2d3250]">
-                  <TextInput
-                    value={email}
-                    onChangeText={setEmail}
-                    placeholder="البريد الإلكتروني"
-                    keyboardType="email-address"
-                    placeholderTextColor="#A0A0A0"
-                    className="text-right flex-1 mr-2 text-gray-700"
-                    textAlign="right"
-                  />
-                  <FontAwesome name="envelope-o" size={20} color="#A0A0A0" />
-                </View>
+                <TouchableWithoutFeedback
+                  onPress={() => usernameRef.current.input?.focus()}
+                >
+                  <View className="flex-row items-center bg-gray-100 rounded-2xl px-4 py-5 w-full justify-between mb-4 border border-[#2d3250]">
+                    <TextInput
+                      ref={(ref) => {
+                        usernameRef.current.input = ref;
+                      }}
+                      defaultValue={usernameRef.current.value}
+                      onChangeText={(text) =>
+                        (usernameRef.current.value = text)
+                      }
+                      placeholder="اسم المستخدم"
+                      placeholderTextColor="#A0A0A0"
+                      className="text-right flex-1 mr-2 h-full text-gray-700"
+                      textAlign="right"
+                    />
+                    <FontAwesome name="envelope-o" size={20} color="#A0A0A0" />
+                  </View>
+                </TouchableWithoutFeedback>
 
-                <View className="flex-row items-center bg-gray-100 rounded-2xl px-4 py-5 w-full justify-between mb-4 border border-[#2d3250]">
-                  <TextInput
-                    value={username}
-                    onChangeText={setUsername}
-                    placeholder="اسمك"
-                    placeholderTextColor="#A0A0A0"
-                    className="text-right flex-1 mr-2 text-gray-700"
-                    textAlign="right"
-                  />
-                  <FontAwesome name="user-o" size={20} color="#A0A0A0" />
-                </View>
+                <TouchableWithoutFeedback
+                  onPress={() => passwordRef.current.input?.focus()}
+                >
+                  <View className="flex-row items-center bg-gray-100 rounded-2xl px-4 py-5 w-full justify-between mb-4 border border-[#2d3250]">
+                    <TextInput
+                      ref={(ref) => {
+                        passwordRef.current.input = ref;
+                      }}
+                      defaultValue={passwordRef.current.value}
+                      onChangeText={(text) =>
+                        (passwordRef.current.value = text)
+                      }
+                      placeholder="كلمة المرور"
+                      placeholderTextColor="#A0A0A0"
+                      className="text-right flex-1 mr-2 h-full text-gray-700"
+                      textAlign="right"
+                    />
+                    <FontAwesome name="envelope-o" size={20} color="#A0A0A0" />
+                  </View>
+                </TouchableWithoutFeedback>
 
-                <View className="flex-row items-center bg-gray-100 rounded-2xl px-4 py-5 w-full justify-between mb-4 border border-[#2d3250]">
-                  <TextInput
-                    value={password}
-                    onChangeText={setPassword}
-                    placeholder="كلمة المرور"
-                    secureTextEntry
-                    placeholderTextColor="#A0A0A0"
-                    className="text-right flex-1 mr-2 text-gray-700"
-                    textAlign="right"
-                  />
-                  <FontAwesome name="lock" size={20} color="#A0A0A0" />
-                </View>
-
-                <View className="flex-row items-center bg-gray-100 rounded-2xl px-4 py-5 w-full justify-between mb-4 border border-[#2d3250]">
-                  <TextInput
-                    value={confirmPassword}
-                    onChangeText={setConfirmPassword}
-                    placeholder="تأكيد كلمة المرور"
-                    secureTextEntry
-                    placeholderTextColor="#A0A0A0"
-                    className="text-right flex-1 mr-2 text-gray-700"
-                    textAlign="right"
-                  />
-                  <FontAwesome name="lock" size={20} color="#A0A0A0" />
-                </View>
+                <TouchableWithoutFeedback
+                  onPress={() => confirmPasswordRef.current.input?.focus()}
+                >
+                  <View className="flex-row items-center bg-gray-100 rounded-2xl px-4 py-5 w-full justify-between mb-4 border border-[#2d3250]">
+                    <TextInput
+                      ref={(ref) => {
+                        confirmPasswordRef.current.input = ref;
+                      }}
+                      defaultValue={confirmPasswordRef.current.value}
+                      onChangeText={(text) =>
+                        (confirmPasswordRef.current.value = text)
+                      }
+                      placeholder="كلمة المرور"
+                      placeholderTextColor="#A0A0A0"
+                      className="text-right flex-1 mr-2 h-full text-gray-700"
+                      textAlign="right"
+                    />
+                    <FontAwesome name="envelope-o" size={20} color="#A0A0A0" />
+                  </View>
+                </TouchableWithoutFeedback>
 
                 <TouchableOpacity
                   onPress={handleSubmit}
                   className="w-full py-4 mt-4 rounded-xl bg-[#f9b17a] shadow-md"
                 >
-                  <Text
-                    style={{ fontFamily: "appFontBold" }}
-                    className="text-white text-center text-2xl"
-                  >
-                    إنشاء الحساب
-                  </Text>
+                  {isLoading ? (
+                    <ActivityIndicator
+                      animating={true}
+                      color="#2d3250"
+                      size={32}
+                    />
+                  ) : (
+                    <Text
+                      style={{ fontFamily: "appFontBold" }}
+                      className="text-white text-center text-2xl"
+                    >
+                      إنشاء الحساب
+                    </Text>
+                  )}
                 </TouchableOpacity>
-                <View className="mx-auto mt-4">
-                  <Text
-                    className="text-xl text-[#2d3250]"
-                    style={{ fontFamily: "appFont" }}
+                <View className="mx-auto mt-4 flex flex-row gap-x-4">
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("Login");
+                    }}
+                    className=""
                   >
+                    <Text
+                      style={{ fontFamily: "appFont" }}
+                      className="text-[#2d3250] text-xl"
+                    >
+                      تسجيل الدخول
+                    </Text>
+                  </TouchableOpacity>
+                  <Text className="text-xl" style={{ fontFamily: "appFont" }}>
                     يوجد لديك حساب؟
                   </Text>
                 </View>
