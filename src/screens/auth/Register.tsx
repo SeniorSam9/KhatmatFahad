@@ -23,17 +23,38 @@ export default function Register() {
   const passwordRef = useRef<RefType>({ value: "", input: null });
   const confirmPasswordRef = useRef<RefType>({ value: "", input: null });
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [unexpectedError, setUnexpectedError] = useState("");
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamsType>>();
 
+  const refs = [
+    { ref: emailRef, label: "البريد الإلكتروني" },
+    { ref: usernameRef, label: "اسم المستخدم" },
+    { ref: passwordRef, label: "كلمة المرور" },
+    { ref: confirmPasswordRef, label: "تأكيد كلمة المرور" },
+  ];
+
+  const showError = (message: string) => {
+    setUnexpectedError(message);
+    setTimeout(() => {
+      setUnexpectedError("");
+    }, 3000);
+  };
+
   const handleSubmit = () => {
     setIsLoading(true);
-    // if (passwordRef.current !== confirmPasswordRef.current) {
-    //   alert("Passwords do not match!");
-    // } else {
-    //   alert("Form submitted successfully!");
-    // }
+
+    for (let field of refs) {
+      if (!field.ref.current.value.trim()) {
+        showError(`عذرًا! حقل ${field.label} فارغ`);
+        return;
+      }
+    }
+
+    if (passwordRef.current.value !== confirmPasswordRef.current.value) {
+      showError("عذرًا! كلمتا السر لا تتطابقان");
+      return;
+    }
   };
 
   return (
@@ -128,6 +149,8 @@ export default function Register() {
                         (passwordRef.current.value = text)
                       }
                       placeholder="كلمة المرور"
+                      textContentType="none"
+                      autoComplete="off"
                       placeholderTextColor="#A0A0A0"
                       className="text-right flex-1 mr-2 h-full text-gray-700"
                       textAlign="right"
@@ -148,8 +171,10 @@ export default function Register() {
                       onChangeText={(text) =>
                         (confirmPasswordRef.current.value = text)
                       }
-                      placeholder="كلمة المرور"
+                      placeholder="تأكيد كلمة المرور"
                       placeholderTextColor="#A0A0A0"
+                      textContentType="none"
+                      autoComplete="off"
                       className="text-right flex-1 mr-2 h-full text-gray-700"
                       textAlign="right"
                     />
