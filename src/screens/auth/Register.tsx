@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
@@ -11,27 +10,23 @@ import {
   ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import AppLogoSVG from "../../components/AppLogoSVG";
-import { FontAwesome } from "@expo/vector-icons";
 import { RefType, RootStackParamsType } from "../../utils/types";
 import { ActivityIndicator } from "react-native-paper";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import Appheader from "../../components/AppHeader";
+import Input from "../../components/Input";
 
 export default function Register() {
   const emailRef = useRef<RefType>({ value: "", input: null });
   const usernameRef = useRef<RefType>({ value: "", input: null });
-  const passwordRef = useRef<RefType>({ value: "", input: null });
-  const confirmPasswordRef = useRef<RefType>({ value: "", input: null });
   const [isLoading, setIsLoading] = useState(false);
   const [unexpectedError, setUnexpectedError] = useState("");
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamsType>>();
 
   const refs = [
-    { ref: emailRef, label: "البريد الإلكتروني" },
     { ref: usernameRef, label: "اسم المستخدم" },
-    { ref: passwordRef, label: "كلمة المرور" },
-    { ref: confirmPasswordRef, label: "تأكيد كلمة المرور" },
+    { ref: emailRef, label: "البريد الإلكتروني" },
   ];
 
   const showError = (message: string) => {
@@ -47,13 +42,9 @@ export default function Register() {
     for (let field of refs) {
       if (!field.ref.current.value.trim()) {
         showError(`عذرًا! حقل ${field.label} فارغ`);
+        setIsLoading(false);
         return;
       }
-    }
-
-    if (passwordRef.current.value !== confirmPasswordRef.current.value) {
-      showError("عذرًا! كلمتا السر لا تتطابقان");
-      return;
     }
   };
 
@@ -68,13 +59,7 @@ export default function Register() {
           keyboardShouldPersistTaps="handled"
         >
           <View id="container" className="flex-1 bg-[#ffffffbd]">
-            <View
-              id="app-logo"
-              className="flex-[0.3] flex flex-col justify-center items-center bg-[#2d3250] rounded-b-[15%]"
-            >
-              <AppLogoSVG width={200} height={100} />
-            </View>
-
+            <Appheader />
             <View
               id="register-section"
               className="flex-[0.7] flex flex-col justify-center items-center"
@@ -95,92 +80,44 @@ export default function Register() {
                     قم بإنشاء حسابك لإنشاء جلسات ختم القرآن الكريم
                   </Text>
                 </View>
-                <TouchableWithoutFeedback
-                  onPress={() => emailRef.current.input?.focus()}
-                >
-                  <View className="flex-row items-center bg-gray-100 rounded-2xl px-4 py-5 w-full justify-between mb-4 border border-[#2d3250]">
-                    <TextInput
-                      ref={(ref) => {
-                        emailRef.current.input = ref;
-                      }}
-                      defaultValue={emailRef.current.value}
-                      onChangeText={(text) => (emailRef.current.value = text)}
-                      placeholder="البريد الإلكتروني"
-                      keyboardType="email-address"
-                      placeholderTextColor="#A0A0A0"
-                      className="text-right flex-1 mr-2 h-full text-gray-700"
-                      textAlign="right"
-                    />
-                    <FontAwesome name="envelope-o" size={20} color="#A0A0A0" />
+                {unexpectedError.length ? (
+                  <View className="mb-2 p-3 flex justify-center bg-[#e11d48] rounded-lg shadow-2xl shadow-rose-500/50">
+                    <Text className="text-white mx-auto text-lg">
+                      {unexpectedError}
+                    </Text>
                   </View>
-                </TouchableWithoutFeedback>
-
-                <TouchableWithoutFeedback
-                  onPress={() => usernameRef.current.input?.focus()}
-                >
-                  <View className="flex-row items-center bg-gray-100 rounded-2xl px-4 py-5 w-full justify-between mb-4 border border-[#2d3250]">
-                    <TextInput
-                      ref={(ref) => {
-                        usernameRef.current.input = ref;
-                      }}
-                      defaultValue={usernameRef.current.value}
-                      onChangeText={(text) =>
-                        (usernameRef.current.value = text)
-                      }
-                      placeholder="اسم المستخدم"
-                      placeholderTextColor="#A0A0A0"
-                      className="text-right flex-1 mr-2 h-full text-gray-700"
-                      textAlign="right"
-                    />
-                    <FontAwesome name="envelope-o" size={20} color="#A0A0A0" />
-                  </View>
-                </TouchableWithoutFeedback>
-
-                <TouchableWithoutFeedback
-                  onPress={() => passwordRef.current.input?.focus()}
-                >
-                  <View className="flex-row items-center bg-gray-100 rounded-2xl px-4 py-5 w-full justify-between mb-4 border border-[#2d3250]">
-                    <TextInput
-                      ref={(ref) => {
-                        passwordRef.current.input = ref;
-                      }}
-                      defaultValue={passwordRef.current.value}
-                      onChangeText={(text) =>
-                        (passwordRef.current.value = text)
-                      }
-                      placeholder="كلمة المرور"
-                      textContentType="none"
-                      autoComplete="off"
-                      placeholderTextColor="#A0A0A0"
-                      className="text-right flex-1 mr-2 h-full text-gray-700"
-                      textAlign="right"
-                    />
-                    <FontAwesome name="envelope-o" size={20} color="#A0A0A0" />
-                  </View>
-                </TouchableWithoutFeedback>
-
-                <TouchableWithoutFeedback
-                  onPress={() => confirmPasswordRef.current.input?.focus()}
-                >
-                  <View className="flex-row items-center bg-gray-100 rounded-2xl px-4 py-5 w-full justify-between mb-4 border border-[#2d3250]">
-                    <TextInput
-                      ref={(ref) => {
-                        confirmPasswordRef.current.input = ref;
-                      }}
-                      defaultValue={confirmPasswordRef.current.value}
-                      onChangeText={(text) =>
-                        (confirmPasswordRef.current.value = text)
-                      }
-                      placeholder="تأكيد كلمة المرور"
-                      placeholderTextColor="#A0A0A0"
-                      textContentType="none"
-                      autoComplete="off"
-                      className="text-right flex-1 mr-2 h-full text-gray-700"
-                      textAlign="right"
-                    />
-                    <FontAwesome name="envelope-o" size={20} color="#A0A0A0" />
-                  </View>
-                </TouchableWithoutFeedback>
+                ) : (
+                  <></>
+                )}
+                <Input
+                  ref={(ref) => {
+                    usernameRef.current.input = ref;
+                  }}
+                  onPressCallback={() => usernameRef.current.input?.focus()}
+                  defaultValue={usernameRef.current.value}
+                  onChangeTextCallback={(text) =>
+                    (usernameRef.current.value = text)
+                  }
+                  placeholder="اسم المستخدم"
+                  className="text-right flex-1 mr-2 h-full text-gray-700"
+                  textAlign="right"
+                  iconName={"user-o"}
+                />
+                <Input
+                  ref={(ref) => {
+                    emailRef.current.input = ref;
+                  }}
+                  onPressCallback={() => emailRef.current.input?.focus()}
+                  defaultValue={emailRef.current.value}
+                  onChangeTextCallback={(text) =>
+                    (emailRef.current.value = text)
+                  }
+                  placeholder="البريد الإلكتروني"
+                  keyboardType="email-address"
+                  className="text-right flex-1 mr-2 h-full text-gray-700"
+                  textAlign="right"
+                  iconName={"envelope-o"}
+                />
 
                 <TouchableOpacity
                   onPress={handleSubmit}

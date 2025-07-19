@@ -3,14 +3,7 @@ import Svg, { Path, SvgProps } from "react-native-svg";
 
 export default function AppLogoSVG(props: SvgProps) {
   return (
-    <Svg
-      // xmlns="http://www.w3.org/2000/svg"
-      width={398}
-      height={174}
-      viewBox="0 0 398 174"
-      fill="none"
-      {...props}
-    >
+    <Svg width={398} height={174} viewBox="0 0 398 174" fill="none" {...props}>
       <Path
         d="M390 16.5812L206.565 81.4072C200.928 83.3996 194.775 83.3879 189.145 81.3741L8 16.5812"
         stroke="#F0C38E"
